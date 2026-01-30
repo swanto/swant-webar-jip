@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- this is a commment: you can change the title to anything you want but it is also fine to just leave it
-    -->
-    <title>template-title</title>
+    <title>Molecular AR</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="styles.css">
@@ -14,77 +12,86 @@
     <script src="gesture-handler.js"></script>
     <script src="sky.js"></script>
 
-    <!-- this is a comment: the alert below produces a pop up box when loaded to give information to users, 
-     you can edit the message in between the inverted commas or remove it entirely
-    -->
     <script>
       window.onload = function () {
         alert("This is the pop up message");
       };
+
       function showModel(type) {
-  const targetEntity = document.querySelector('#dopamine-model'); // This targets your existing <a-entity>
-  
-  if (type === 'dopamine') {
-    targetEntity.setAttribute('obj-model', 'obj: #dopamine-obj; mtl: #dopamine-mtl');
-  } else if (type === 'serotonin') {
-    targetEntity.setAttribute('obj-model', 'obj: #serotonin-obj; mtl: #serotonin-mtl');
-  }
-}
-      function showModel(type) {
-  const targetEntity = document.querySelector('#dopamine-model');
-  const closeBtn = document.querySelector('#close-btn');
-  
-  // 1. Set the correct model files
-  if (type === 'dopamine') {
-    targetEntity.setAttribute('obj-model', 'obj: #dopamine-obj; mtl: #dopamine-mtl');
-  } else if (type === 'serotonin') {
-    targetEntity.setAttribute('obj-model', 'obj: #serotonin-obj; mtl: #serotonin-mtl');
-  }
+        // Target BOTH potential model entities
+        const dopamine = document.querySelector('#dopamine-model');
+        const serotonin = document.querySelector('#serotonin-model');
+        const closeBtn = document.querySelector('#close-btn');
 
-  // 2. Make the model visible and show the close button
-  targetEntity.setAttribute('visible', 'true');
-  closeBtn.style.display = 'block';
-}
+        // Hide both first to ensure a clean swap
+        dopamine.setAttribute('visible', 'false');
+        serotonin.setAttribute('visible', 'false');
 
-function closeModel() {
-  const targetEntity = document.querySelector('#dopamine-model');
-  const closeBtn = document.querySelector('#close-btn');
+        // Show the specific one selected
+        if (type === 'dopamine') {
+          dopamine.setAttribute('visible', 'true');
+        } else if (type === 'serotonin') {
+          serotonin.setAttribute('visible', 'true');
+        }
 
-  // Hide the 3D model and the close button
-  targetEntity.setAttribute('visible', 'false');
-  closeBtn.style.display = 'none';
-}
+        // Show the close button
+        closeBtn.style.display = 'inline-block';
+      }
+
+      function closeModel() {
+        const dopamine = document.querySelector('#dopamine-model');
+        const serotonin = document.querySelector('#serotonin-model');
+        const closeBtn = document.querySelector('#close-btn');
+
+        dopamine.setAttribute('visible', 'false');
+        serotonin.setAttribute('visible', 'false');
+        closeBtn.style.display = 'none';
+      }
     </script>
+
+    <style>
+      /* This styles your menu container */
+      #ui-container {
+        position: fixed;
+        top: 20px;
+        width: 100%;
+        text-align: center;
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .menu-btn {
+        padding: 10px 15px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid #333;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        font-family: sans-serif;
+      }
+
+      #skybtn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
+    </style>
   </head>
 
   <body> 
-    <div id="ui-container" style="position: fixed; top: 20px; width: 100%; text-align: center; z-index: 1000; display: flex; justify-content: center; gap: 10px;">
+    <div id="ui-container">
       <button class="menu-btn" onclick="showModel('dopamine')">Dopamine</button>
       <button class="menu-btn" onclick="showModel('serotonin')">Serotonin</button>
-      <button class="menu-btn" id="close-btn" style="display:none; background: #ff4d4d; color: white;" onclick="closeModel()">Close Model</button>
-    </div>
-   <div style="position: fixed; top: 20px; width: 100%; text-align: center; z-index: 999; display: flex; justify-content: center; gap: 10px;">
-      <button class="menu-btn" onclick="showModel('dopamine')">Show Dopamine</button>
-      <button class="menu-btn" onclick="showModel('serotonin')">Show Serotonin</button>
+      <button class="menu-btn" id="close-btn" style="display:none; background: #ff4d4d; color: white;" onclick="closeModel()">X Close</button>
     </div>
 
-<style>
-  .menu-btn {
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.8);
-    border: 2px solid #333;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-</style> 
-  <div id="skybtn">
-    <button 
-    class="skybtn" 
-    id="skybtn"
-    onclick="skyCTRL()"
-    >X</button>
-  </div>
+    <div id="skybtn">
+      <button class="menu-btn" onclick="skyCTRL()">Hide Background</button>
+    </div>
+
     <a-scene
       arjs="sourceWidth: 1024; sourceHeight: 776; displayWidth: 1024; displayHeight: 776;"
       embedded
@@ -96,75 +103,36 @@ function closeModel() {
       id="scene"
     >
       <a-assets>
-        <!-- this is a commment: for "id", replace "template" with your exact model name (without file extension) make sure the -obj is immediately behind the model name, 
-          for "src" replace "template" with model name, make sure the .obj is immediately behind the model name,
-          make sure that the model file is placed in the same repository where this index.html file is located
-        -->
-        <a-asset-item
-          id="dopamine-obj"
-          src="Dopamine-model.obj"
-        >
-        <!-- this is a commment: repeat the same for mtl file
-        -->
-        </a-asset-item>
-        <a-asset-item
-          id="dopamine-mtl"
-          src="Dopamine-model.mtl"
-        >
-        </a-asset-item>
+        <a-asset-item id="dopamine-obj" src="Dopamine-model.obj"></a-asset-item>
+        <a-asset-item id="dopamine-mtl" src="Dopamine-model.mtl"></a-asset-item>
         <a-asset-item id="serotonin-obj" src="serotonin-model.obj"></a-asset-item>
         <a-asset-item id="serotonin-mtl" src="serotonin-model.mtl"></a-asset-item>
       </a-assets>
 
-      <a-marker
-        preset="hiro"
-        raycaster="objects: .clickable"
-        emitevents="true"
-        cursor="fuse: false; rayOrigin: mouse;"
-        id="markerA"
-        smooth="true"
-        smoothCount="50"
-        smoothTolerance="0.1"
-        smoothThreshold="1000"
-      >
+      <a-marker preset="hiro" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="markerA">
+        <a-sky id="sky" color="#C0C0C0" opacity="0"></a-sky> 
         
-        <a-sky 
-          id=sky
-          color="#C0C0C0"
-          opacity="0"
-        >
-        </a-sky>        
-        
-      <!-- this is a commment: for "id", replace "template" with model name, make sure the "-model" is there immediately behind the model name
-        for "obj-model", replace "#template-obj" and "#template-mtl" with model name from a-asset-item above, make sure the # is there immediately in front of the model name and the -obj and -mtl are immediately behind the model name
-        you can leave position unchanged, but you can modify the x y z coordinates to adjust where your model appears above the Hiro Marker, if necessary,
-        you can leave rotation unchanged, but you can modify the x y z rotation to adjust the angle that your model appears above the Hiro Marker, if necessary,
-        you can leave scale unchanged, but you can modify the x y z scale to adjust the size of your model when it first loads, if necessary,
-        OBJ 3D models cannot have animation
-      -->
         <a-entity
           id="dopamine-model"
           visible="false"
           obj-model="obj: #dopamine-obj; mtl: #dopamine-mtl"
           position="0 0 0"
-          rotation="0 0 0"
           scale="0.5 0.5 0.5"
           class="clickable"
-          gesture-handler        
-        >
+          gesture-handler>
         </a-entity>
+
         <a-entity
           id="serotonin-model"
           visible="false"
           obj-model="obj: #serotonin-obj; mtl: #serotonin-mtl"
           position="0 0 0"
-          rotation="0 0 0"
           scale="0.5 0.5 0.5"
           class="clickable"
-          gesture-handler        
-        >
+          gesture-handler>
         </a-entity>
       </a-marker>
+      
       <a-entity camera></a-entity>
     </a-scene>
   </body>
