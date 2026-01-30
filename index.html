@@ -21,10 +21,34 @@
       window.onload = function () {
         alert("This is the pop up message");
       };
+      function showModel(type) {
+  const targetEntity = document.querySelector('#dopamine-model'); // This targets your existing <a-entity>
+  
+  if (type === 'dopamine') {
+    targetEntity.setAttribute('obj-model', 'obj: #dopamine-obj; mtl: #dopamine-mtl');
+  } else if (type === 'serotonin') {
+    targetEntity.setAttribute('obj-model', 'obj: #serotonin-obj; mtl: #serotonin-mtl');
+  }
+}
     </script>
   </head>
 
   <body> 
+   <div style="position: fixed; top: 20px; width: 100%; text-align: center; z-index: 999; display: flex; justify-content: center; gap: 10px;">
+  <button class="menu-btn" onclick="showModel('dopamine')">Show Dopamine</button>
+  <button class="menu-btn" onclick="showModel('serotonin')">Show Serotonin</button>
+</div>
+
+<style>
+  .menu-btn {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid #333;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+</style> 
   <div id="skybtn">
     <button 
     class="skybtn" 
@@ -59,6 +83,8 @@
           src="Dopamine-model.mtl"
         >
         </a-asset-item>
+        <a-asset-item id="serotonin-obj" src="serotonin-model.obj"></a-asset-item>
+        <a-asset-item id="serotonin-mtl" src="serotonin-model.mtl"></a-asset-item>
       </a-assets>
 
       <a-marker
