@@ -30,14 +30,43 @@
     targetEntity.setAttribute('obj-model', 'obj: #serotonin-obj; mtl: #serotonin-mtl');
   }
 }
+      function showModel(type) {
+  const targetEntity = document.querySelector('#dopamine-model');
+  const closeBtn = document.querySelector('#close-btn');
+  
+  // 1. Set the correct model files
+  if (type === 'dopamine') {
+    targetEntity.setAttribute('obj-model', 'obj: #dopamine-obj; mtl: #dopamine-mtl');
+  } else if (type === 'serotonin') {
+    targetEntity.setAttribute('obj-model', 'obj: #serotonin-obj; mtl: #serotonin-mtl');
+  }
+
+  // 2. Make the model visible and show the close button
+  targetEntity.setAttribute('visible', 'true');
+  closeBtn.style.display = 'block';
+}
+
+function closeModel() {
+  const targetEntity = document.querySelector('#dopamine-model');
+  const closeBtn = document.querySelector('#close-btn');
+
+  // Hide the 3D model and the close button
+  targetEntity.setAttribute('visible', 'false');
+  closeBtn.style.display = 'none';
+}
     </script>
   </head>
 
   <body> 
+    <div id="ui-container" style="position: fixed; top: 20px; width: 100%; text-align: center; z-index: 1000; display: flex; justify-content: center; gap: 10px;">
+      <button class="menu-btn" onclick="showModel('dopamine')">Dopamine</button>
+      <button class="menu-btn" onclick="showModel('serotonin')">Serotonin</button>
+      <button class="menu-btn" id="close-btn" style="display:none; background: #ff4d4d; color: white;" onclick="closeModel()">Close Model</button>
+    </div>
    <div style="position: fixed; top: 20px; width: 100%; text-align: center; z-index: 999; display: flex; justify-content: center; gap: 10px;">
-  <button class="menu-btn" onclick="showModel('dopamine')">Show Dopamine</button>
-  <button class="menu-btn" onclick="showModel('serotonin')">Show Serotonin</button>
-</div>
+      <button class="menu-btn" onclick="showModel('dopamine')">Show Dopamine</button>
+      <button class="menu-btn" onclick="showModel('serotonin')">Show Serotonin</button>
+    </div>
 
 <style>
   .menu-btn {
@@ -115,6 +144,7 @@
       -->
         <a-entity
           id="dopamine-model"
+          visible="false"
           obj-model="obj: #dopamine-obj; mtl: #dopamine-mtl"
           position="0 0 0"
           rotation="0 0 0"
@@ -123,7 +153,17 @@
           gesture-handler        
         >
         </a-entity>
-
+        <a-entity
+          id="serotonin-model"
+          visible="false"
+          obj-model="obj: #serotonin-obj; mtl: #serotonin-mtl"
+          position="0 0 0"
+          rotation="0 0 0"
+          scale="0.5 0.5 0.5"
+          class="clickable"
+          gesture-handler        
+        >
+        </a-entity>
       </a-marker>
       <a-entity camera></a-entity>
     </a-scene>
